@@ -28,7 +28,6 @@ class Matcher:
             if score > high_score:
                 high_score = score
                 detected_index = i
-            print_info(f'Index: {i} | Score: {score}')
 
         if high_score > 0.15:
             # Person is detected, updating last frame

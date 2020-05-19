@@ -4,10 +4,12 @@ import numpy as np
 
 from detector import Detector
 from tracker import Tracker
+from matcher import Matcher
 from helpers import print_info
 
 detect = Detector('yolo/y416/yolov3.cfg', 'yolo/y416/yolov3.weights')
 track = Tracker(50)
+match = Matcher()
 
 print_info("Loading Video...")
 cap = cv2.VideoCapture('mp4/005.mp4')
@@ -28,14 +30,19 @@ while True:
 
     rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-    if count % 50 == 0:
+    if count % 100 == 0:
+        track.reset_trackers()
+
         detect_image, objects = detect.detect_person(frame.copy())
 
-        if len(objects) > 0:
-            track.reset_trackers()
-
-        for box in objects:
-            track.start_tracker(rgb_frame, box)
+        for i, box in enumerate(objects):
+            found_match, index = match.match_people(frame, box)
+            if not found_match:
+                # If match is not found register a new object
+                track.start_tracker(rgb_frame, box)
+            else:
+                # If match is found, update the box for existing object
+                track.update_tracker(rgb_frame, box, index)
 
         cv2.imshow("Detected", detect_image)
     else:

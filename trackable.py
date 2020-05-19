@@ -6,6 +6,7 @@ class Trackable:
         self.centroid = None
         self.disappeared = 0
         self.counted = False
+        self.tracked = True
 
     def update_centroid(self, centroid):
         self.centroid = centroid
