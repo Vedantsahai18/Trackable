@@ -1,0 +1,20 @@
+# Scale Settings
+# For 005.mp4
+SCALE_WIDTH = 25
+SCALE_HEIGHT = 50
+
+# SCALE_WIDTH = 100
+# SCALE_HEIGHT = 100
+
+# Video Settings
+DETECT_AFTER_N = 50
+
+# NMS Settings
+NMS_CONFIDENCE = 0.1
+NMS_THRESHOLD = 0.1
+
+# Detection Settings
+DETECTION_CONFIDENCE = 0.9
+
+# Tracker Settings
+MAX_DISAPPEARED = 50

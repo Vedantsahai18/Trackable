@@ -1,16 +1,17 @@
 import cv2
 import numpy as np
 
-from helpers import print_info
+from utils.helpers import print_info
+from utils.constants import NMS_CONFIDENCE, NMS_THRESHOLD, DETECTION_CONFIDENCE
 
 class Detector:
     '''
-    Class for Detecting Objects
+    Class for detecting objects.
     '''
 
     def __init__(self, cfg_path, weights_path):
         '''
-        Load the model weights and classes
+        Load the model weights and classes.
         '''
         print_info("Loading Model...")
         self.model = cv2.dnn.readNet(cfg_path, weights_path)
@@ -21,7 +22,7 @@ class Detector:
 
     def detect_person(self, image):
         '''
-        Perform human detection
+        Perform human detection.
         '''
         blob = cv2.dnn.blobFromImage(image, 1 / 255.0, (416, 416), swapRB=True, crop=False)
         self.model.setInput(blob)
@@ -30,15 +31,15 @@ class Detector:
         labels = []
         confidences = []
         boxes = []
-        conf_threshold = 0.5
-        nms_threshold = 0.7
+        conf_threshold = NMS_CONFIDENCE
+        nms_threshold = NMS_THRESHOLD
 
         for output in outputs:
             for detection in output:
                 scores = detection[5:]
                 class_id = np.argmax(scores)
                 confidence = scores[class_id]
-                if confidence > 0.5 and self.classes[class_id] == 'person':
+                if confidence > DETECTION_CONFIDENCE and self.classes[class_id] == 'person':
                     center_x = int(detection[0] * image.shape[1])
                     center_y = int(detection[1] * image.shape[0])
                     w = int(detection[2] * image.shape[1])
@@ -69,7 +70,7 @@ class Detector:
 
     def __draw_bounding_box(self, image, label, confidence, start_x, start_y, end_x, end_y):
         '''
-        Draw bounding box after detecting human
+        Draw bounding box after detecting human.
         '''
         color = (0, 255, 0)
 
