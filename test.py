@@ -42,16 +42,28 @@ def _get_score(input_image, to_match_image):
 
     # matching_image = cv2.drawMatches(input_resize, input_keypoints, to_match_resize, to_match_keypoints, matches[:50], None, flags=2)
 
-    return 0.2 * orb_score + 0.2 * ssim_score + 0.3 * corr_score + 0.3 * (1 - bhatt_score)
+    return 0.2 * ssim_score + 0.4 * corr_score + 0.4 * (1 - bhatt_score)
 
 image_list = os.listdir('test_match')
-input_image = cv2.imread('t+10.jpeg')
+
+image_list = sorted(image_list)
 
 
-for image_path in image_list:
+for i in range(len(image_list) - 1):
 
-    image = cv2.imread('test_match/' + image_path)
+    image_old = cv2.imread('test_match/' + image_list[i])
+    image_next = cv2.imread('test_match/' + image_list[i + 1])
 
-    score = _get_score(input_image, image)
+    cv2.imshow(f'Image {i}', image_old)
+    cv2.imshow(f'Image {i + 1}', image_next)
 
-    print(f'Score for {image_path} | {score}\n')
+    score = _get_score(image_old, image_next)
+
+    print(f'Score for {i} and {i + 1} | {score}\n')
+
+while True:
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+cv2.destroyAllWindows()
+

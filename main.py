@@ -14,7 +14,7 @@ detect = Detector('yolo/y416/yolov3.cfg', 'yolo/y416/yolov3.weights')
 track = Tracker(MAX_DISAPPEARED)
 
 print_info("Loading Video...")
-cap = cv2.VideoCapture('mp4/005.mp4')
+cap = cv2.VideoCapture('mp4/001.mp4')
 # cap = cv2.VideoCapture(0)
 print_info("Video Loaded!")
 W  = int(cap.get(3))

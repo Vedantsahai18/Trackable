@@ -1,0 +1,1 @@
+from .feature_extractor import get_cosine_similarity

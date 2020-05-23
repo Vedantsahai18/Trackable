@@ -4,7 +4,9 @@ import torchvision.models as models
 import torchvision.transforms as transforms
 from torch.autograd import Variable
 
-import cv2
+import os
+
+from PIL import Image
 
 # Load the pretrained model
 model = models.resnet18(pretrained=True)
@@ -15,27 +17,15 @@ layer = model._modules.get('avgpool')
 # Set model to evaluation mode
 model.eval()
 
-
+scaler = transforms.Resize((224, 224))
 normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 to_tensor = transforms.ToTensor()
 
-def get_cosine_similarity(input_image, to_match_image):
-    
-    input_vector = _get_vector(input_image)
-
-    to_match_vector = _get_vector(to_match_image)
-
-    cos = nn.CosineSimilarity(dim=1, eps=1e-6)
-    cosine_score = cos(input_vector.unsqueeze(0), to_match_vector.unsqueeze(0))
-
-    return cosine_score.numpy()[0]
-
-
-def _get_vector(image):
-
-    image = cv2.resize(image, (224, 224))
+def get_vector(image_name):
+    # 1. Load the image with Pillow library
+    img = Image.open(image_name)
     # 2. Create a PyTorch Variable with the transformed image
-    t_img = Variable(normalize(to_tensor(image)).unsqueeze(0))
+    t_img = Variable(normalize(to_tensor(scaler(img))).unsqueeze(0))
     # 3. Create a vector of zeros that will hold our feature vector
     #    The 'avgpool' layer has an output size of 512
     my_embedding = torch.zeros(512)
@@ -50,3 +40,19 @@ def _get_vector(image):
     h.remove()
     # 8. Return the feature vector
     return my_embedding
+
+
+image_list = os.listdir('test_match')
+
+image_list = sorted(image_list)
+print(image_list)
+
+for i in range(len(image_list) - 1):
+
+    pic_one_vector = get_vector('test_match/' + image_list[i])
+    pic_two_vector = get_vector('test_match/' + image_list[i + 1])
+
+    # Using PyTorch Cosine Similarity
+    cos = nn.CosineSimilarity(dim=1, eps=1e-6)
+    cos_sim = cos(pic_one_vector.unsqueeze(0), pic_two_vector.unsqueeze(0))
+    print(f'\nImages {i} and {i + 1} Cosine similarity: {cos_sim}\n')
