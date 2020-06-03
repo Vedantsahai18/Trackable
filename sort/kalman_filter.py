@@ -82,7 +82,7 @@ class KalmanFilter:
             1e-5,
             self._std_weight_velocity * mean[3]
         ]
-        motion_cov = np.diag(np.square(np.r_(std_pos, std_vel)))
+        motion_cov = np.diag(np.square(np.r_[std_pos, std_vel]))
 
         mean = np.dot(self._motion_mat, mean)
         # Pk = Fk . Pk-1 . Transpose(F)k + Qk
