@@ -6,14 +6,16 @@ from torch.autograd import Variable
 
 import cv2
 
+from utils.helpers import print_info
+
+print_info('Loading ResNet Model...')
 # Load the pretrained model
 model = models.resnet18(pretrained=True)
 # Use the model object to select the desired layer
 layer = model._modules.get('avgpool')
-# print(model)
-
 # Set model to evaluation mode
 model.eval()
+print_info('Model Loaded!')
 
 
 normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])

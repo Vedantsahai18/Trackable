@@ -13,12 +13,12 @@ class Detector:
         '''
         Load the model weights and classes.
         '''
-        print_info("Loading Model...")
+        print_info("Loading YOLOv3 Model...")
         self.model = cv2.dnn.readNet(cfg_path, weights_path)
         self.output_layers = self.model.getUnconnectedOutLayersNames()
         with open('yolo/classes.txt', 'r') as f:
             self.classes = f.read().splitlines()
-        print_info("Finished Loading Model!")
+        print_info("Model Loaded!")
 
     def detect_person(self, image):
         '''

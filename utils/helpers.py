@@ -36,7 +36,4 @@ def crop_image_from_bounding_box(image, box):
     if end_x > WIDTH: end_x = WIDTH
     if start_y < 0: start_y = 0
     if end_y > HEIGHT: end_y = HEIGHT
-    print(box)
-    print(image.shape)
-    print(image[start_y:end_y, start_x:end_x].shape)
     return image[start_y:end_y, start_x:end_x]

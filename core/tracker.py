@@ -12,12 +12,6 @@ class Tracker:
     def __init__(self, max_disappeared):
         self.max_disappeared = max_disappeared
         self.tracking_indices = []
-
-    def get_tracker_length(self):
-        '''
-        Returns the numebr (lenght of tracking_indices) of the currently tracked objects.
-        '''
-        return len(self.tracking_indices)
     
     def reset_trackers(self):
         '''
@@ -60,10 +54,7 @@ class Tracker:
         for index in self.tracking_indices:
             trackables[index].tracker.update(rgb_frame)
             pos = trackables[index].tracker.get_position()
-            start_x = int(pos.left())
-            start_y = int(pos.top())
-            end_x = int(pos.right())
-            end_y = int(pos.bottom())
+            start_x, start_y, end_x, end_y = int(pos.left()), int(pos.top()), int(pos.right()), int(pos.bottom())
             rects.append((start_x, start_y, end_x, end_y))
             trackables[index].update_image(frame.copy(), (start_x, start_y, end_x, end_y))
 
@@ -134,8 +125,9 @@ class Tracker:
             text = f'ID: {index}'
 
             centroid = trackables[index].get_centroid()
-            cv2.putText(frame, text, (centroid[0] - 10, centroid[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-            cv2.circle(frame, (centroid[0], centroid[1]), 4, (0, 255, 0), -1)
+            if centroid is not None:
+                cv2.putText(frame, text, (centroid[0] - 10, centroid[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+                cv2.circle(frame, (centroid[0], centroid[1]), 4, (0, 255, 0), -1)
 
     def __draw_bounding_boxes(self, frame, rects):
         '''
