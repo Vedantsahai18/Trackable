@@ -35,6 +35,7 @@ while True:
 
     if count % DETECT_AFTER_N == 0:
 
+        # To provide new object an ID
         next_object_index = len(trackable_objects)
         
         track.reset_trackers()
