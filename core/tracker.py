@@ -17,12 +17,14 @@ class Tracker:
         '''
         Resets the tracking_indices for new detection phase.
         '''
+
         self.tracking_indices = []
 
     def start_tracker(self, index, rgb_frame, box):
         '''
         Starts the tracker for a new trackable objects and adds to tracking_indices.
         '''
+
         (start_x, start_y, end_x, end_y) = box
         t = dlib.correlation_tracker()
         rect = dlib.rectangle(start_x, start_y, end_x, end_y)
@@ -36,6 +38,7 @@ class Tracker:
         Updates the tracker for an existing trackable object and adds to
         tracking_indices if not tracked previously.
         '''
+
         (start_x, start_y, end_x, end_y) = box
         t = dlib.correlation_tracker()
         rect = dlib.rectangle(start_x, start_y, end_x, end_y)
@@ -50,6 +53,7 @@ class Tracker:
         '''
         Performs the main update for the tracking algorithm.
         '''
+
         rects = []
         for index in self.tracking_indices:
             trackables[index].tracker.update(rgb_frame)
@@ -119,8 +123,9 @@ class Tracker:
 
     def __draw_centroids(self, frame, trackables):
         '''
-        Draws the centroids currently tracked objects
+        Draws the centroids currently tracked objects.
         '''
+
         for index in self.tracking_indices:
             text = f'ID: {index}'
 
@@ -133,5 +138,6 @@ class Tracker:
         '''
         Draws the bounding boxes for the currently tracked objects.
         '''
+        
         for (start_x, start_y, end_x, end_y) in rects:
             cv2.rectangle(frame, (start_x, start_y), (end_x, end_y), (0, 255, 0), 2)

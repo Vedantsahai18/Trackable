@@ -13,6 +13,7 @@ class Detector:
         '''
         Load the model weights and classes.
         '''
+        
         print_info("Loading YOLOv3 Model...")
         self.model = cv2.dnn.readNet(cfg_path, weights_path)
         self.output_layers = self.model.getUnconnectedOutLayersNames()
@@ -24,6 +25,7 @@ class Detector:
         '''
         Perform human detection.
         '''
+
         blob = cv2.dnn.blobFromImage(image, 1 / 255.0, (416, 416), swapRB=True, crop=False)
         self.model.setInput(blob)
         outputs = self.model.forward(self.output_layers)
@@ -72,6 +74,7 @@ class Detector:
         '''
         Draw bounding box after detecting human.
         '''
+
         color = (0, 255, 0)
 
         cv2.rectangle(image, (start_x, start_y), (end_x, end_y), color, 2)

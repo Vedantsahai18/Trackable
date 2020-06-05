@@ -6,8 +6,9 @@ from .feature_extractor import get_cosine_similarity
 
 def match_people(input_image, box, trackables):
     '''
-    Matches people based on their image
+    Matches people based on their image.
     '''
+    
     input_image = crop_image_from_bounding_box(input_image, box)
 
     if len(trackables) == 0:
@@ -24,17 +25,18 @@ def match_people(input_image, box, trackables):
                 high_score = score
                 detected_index = i
 
-    # cv2.imshow('Matching Image', matching_image)
     print_info(f'High Score for Matching: {high_score}')
     if high_score > 0.8:
         # Person is detected, updating last frame
         return True, detected_index, input_image
-    
     else:
         # Person not found, adding to list
         return False, len(trackables), input_image
 
 def _get_score(input_image, to_match_image):
+    '''
+    Returns the similarity score between the two images.
+    '''
 
     input_gray = cv2.cvtColor(input_image, cv2.COLOR_BGR2GRAY)
     input_resize = cv2.resize(input_gray, (250, 250))

@@ -22,11 +22,12 @@ normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 
 to_tensor = transforms.ToTensor()
 
 def get_cosine_similarity(input_image, to_match_image):
+    '''
+    Returns the cosine similarity score between the two images.
+    '''
     
     input_vector = _get_vector(input_image)
-
     to_match_vector = _get_vector(to_match_image)
-
     cos = nn.CosineSimilarity(dim=1, eps=1e-6)
     cosine_score = cos(input_vector.unsqueeze(0), to_match_vector.unsqueeze(0))
 
@@ -34,21 +35,16 @@ def get_cosine_similarity(input_image, to_match_image):
 
 
 def _get_vector(image):
+    '''
+    Returns the vector embeddings for an image.
+    '''
 
     image = cv2.resize(image, (224, 224))
-    # 2. Create a PyTorch Variable with the transformed image
-    t_img = Variable(normalize(to_tensor(image)).unsqueeze(0))
-    # 3. Create a vector of zeros that will hold our feature vector
-    #    The 'avgpool' layer has an output size of 512
-    my_embedding = torch.zeros(512)
-    # 4. Define a function that will copy the output of a layer
+    tensor_img = Variable(normalize(to_tensor(image)).unsqueeze(0))
+    embedding = torch.zeros(512)
     def copy_data(m, i, o):
-        my_embedding.copy_(o.data.squeeze())
-    # 5. Attach that function to our selected layer
+        embedding.copy_(o.data.squeeze())
     h = layer.register_forward_hook(copy_data)
-    # 6. Run the model on our transformed image
-    model(t_img)
-    # 7. Detach our copy function from the layer
+    model(tensor_img)
     h.remove()
-    # 8. Return the feature vector
-    return my_embedding
+    return embedding
