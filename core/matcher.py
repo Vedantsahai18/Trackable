@@ -1,7 +1,7 @@
 import cv2
 
 from utils.helpers import print_info, crop_image_from_bounding_box
-from feature_extractor import get_cosine_similarity
+from .feature_extractor import get_cosine_similarity
 
 
 def match_people(input_image, box, trackables):
