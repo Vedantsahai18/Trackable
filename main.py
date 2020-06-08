@@ -2,6 +2,8 @@ import cv2
 import dlib
 import numpy as np
 
+from collections import OrderedDict
+
 from core import Detector
 from core import Tracker
 from core import match_people
@@ -22,7 +24,7 @@ set_width_height(W, H)
 print_info(f"Width: {W} | Height: {H}")
 
 count = 0
-trackable_objects = {}
+trackable_objects = OrderedDict()
 
 while True:
 
@@ -36,7 +38,18 @@ while True:
     if count % DETECT_AFTER_N == 0:
 
         # To provide new object an ID
-        next_object_index = len(trackable_objects)
+        if len(trackable_objects) == 0:
+            next_object_index = len(trackable_objects)
+        else:
+            # To find the available IDs
+            # Just a hack, will be a better way to optimize
+            # This is to avoid giving a lot of IDs to people because of mismatch
+            track_arr = list(trackable_objects.keys())
+            id_set = set([i for i in range(track_arr[-1] + 2)])
+            available_ids = id_set - set(track_arr)
+            print(available_ids, id_set, set(track_arr))
+            next_object_index = min(available_ids)
+
         
         track.reset_trackers()
 
