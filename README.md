@@ -28,8 +28,7 @@ opencv_contrib_python==4.2.0.34
 ## Project Structure
 The directory structure is as follows:
 
- - Core
-This contains the core modules for the project.
+ - Core: This contains the core modules for the project.
 	- Detector:
 		- This uses the YOLOv3 model to detect humans after every N frames.
 		- Once the object is detected, the matching algorithm is used to see if the object is already being tracked, and thus avoiding re-identification.
@@ -44,8 +43,7 @@ This contains the core modules for the project.
 		- The score is the weighted average of correlation score, Bhattacharyya score (obtained from their histograms) and the cosine similarity from the feature extractor.
 	- Feature Extractor:
 		- This contains the ResNet model (from PyTorch), which is used to perform feature extraction and return a cosine similarity score.
-- Utils
-This contains helper functions and constants used by the core module.
+- Utils: This contains helper functions and constants used by the core module.
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
