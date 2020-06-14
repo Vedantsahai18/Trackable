@@ -56,6 +56,7 @@ class Tracker:
 
         rects = []
         for index in self.tracking_indices:
+            if index not in trackables.keys(): continue # Not being tracked anymore
             trackables[index].tracker.update(rgb_frame)
             pos = trackables[index].tracker.get_position()
             start_x, start_y, end_x, end_y = int(pos.left()), int(pos.top()), int(pos.right()), int(pos.bottom())
@@ -127,6 +128,8 @@ class Tracker:
         '''
 
         for index in self.tracking_indices:
+            if index not in trackables.keys(): continue # Not being tracked anymore
+            
             text = f'ID: {index}'
 
             centroid = trackables[index].get_centroid()

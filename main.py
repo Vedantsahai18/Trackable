@@ -16,7 +16,7 @@ detect = Detector('yolo/y416/yolov3.cfg', 'yolo/y416/yolov3.weights')
 track = Tracker(MAX_DISAPPEARED)
 
 print_info("Loading Video...")
-cap = cv2.VideoCapture('mp4/001.mp4')
+cap = cv2.VideoCapture('mp4/005.mp4') # mp4/001.mp4 mp4/002.mp4 mp4/003.mp4 mp4/004.mp4 mp4/005.mp4
 print_info("Video Loaded!")
 W  = int(cap.get(3))
 H = int(cap.get(4))
@@ -45,9 +45,8 @@ while True:
             # Just a hack, will be a better way to optimize
             # This is to avoid giving a lot of IDs to people because of mismatch
             track_arr = list(trackable_objects.keys())
-            id_set = set([i for i in range(track_arr[-1] + 2)])
+            id_set = set([i for i in range(max(track_arr) + 2)])
             available_ids = id_set - set(track_arr)
-            print(available_ids, id_set, set(track_arr))
             next_object_index = min(available_ids)
 
         
@@ -78,8 +77,8 @@ while True:
     else:
         
         tracking_image = track.track_person(frame.copy(), rgb_frame, trackable_objects)
-                # Get the updated trackers
         
+        # Get the updated trackers
         trackable_objects = {trkble_id: trkble for trkble_id, trkble in trackable_objects.items() if trkble.is_being_tracked()}
         n_o_p = len(trackable_objects)
 
