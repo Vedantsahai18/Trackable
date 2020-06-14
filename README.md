@@ -28,8 +28,7 @@ opencv_contrib_python==4.2.0.34
 ## Project Structure
 The directory structure is as follows:
 
- - Core
-This contains the core modules for the project.
+ - Core: This contains the core modules for the project.
 	- Detector:
 		- This uses the YOLOv3 model to detect humans after every N frames.
 		- Once the object is detected, the matching algorithm is used to see if the object is already being tracked, and thus avoiding re-identification.
@@ -44,13 +43,29 @@ This contains the core modules for the project.
 		- The score is the weighted average of correlation score, Bhattacharyya score (obtained from their histograms) and the cosine similarity from the feature extractor.
 	- Feature Extractor:
 		- This contains the ResNet model (from PyTorch), which is used to perform feature extraction and return a cosine similarity score.
-- Utils
-This contains helper functions and constants used by the core module.
+- Utils: This contains helper functions and constants used by the core module.
+
+## Demo
+![Demo 1](assets/1.gif)
+
+![Demo 2](assets/2.gif)
+
+![Demo 3](assets/3.gif)
+
+![Demo 4](assets/4.gif)
+
+![Demo 5](assets/5.gif)
+
+As you can see the two major problems are:
+1. Misidentification: This can be solved by training on the objects beforehand. However the main aim for this project was to differentiate between objects without any training.
+
+2. Mistracking: This could be helped with a better matching algorithm. DeepSort could be another alternative.
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
 
 ## References
+- [Correlation Tracker](http://www.bmva.org/bmvc/2014/files/paper038.pdf)
 - [Multi-Object Tracking with dlib.](https://www.pyimagesearch.com/2018/10/29/multi-object-tracking-with-dlib/)
 - [DeepSort.](https://github.com/nwojke/deep_sort)
 - [Tracking without bells and whistles.](https://arxiv.org/pdf/1903.05625.pdf)
